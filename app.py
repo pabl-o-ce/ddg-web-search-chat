@@ -19,8 +19,8 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF",
-    filename="mixtral-8x7b-instruct-v0.1.Q6_K.gguf",
+    repo_id="bartowski/Einstein-v6-7B-GGUF",
+    filename="Einstein-v6-7B-Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -126,7 +126,7 @@ def respond(
 
     llm = Llama(
         model_path=f"models/{model}",
-        flash_attn=False,
+        flash_attn=True,
         n_threads=40,
         n_gpu_layers=81,
         n_batch=1024,
@@ -213,7 +213,7 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'mixtral-8x7b-instruct-v0.1.Q6_K.gguf'
+            'Einstein-v6-7B-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

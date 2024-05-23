@@ -11,6 +11,8 @@ license: apache-2.0
 header: mini
 fullWidth: true
 short_description: Chat llama-cpp-agent that can search the web.
+models:
+  - mistralai/Mistral-7B-Instruct-v0.3
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference

@@ -19,6 +19,11 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
+    repo_id="bartowski/dolphin-2.8-mistral-7b-v02-GGUF",
+    filename="dolphin-2.8-mistral-7b-v02-Q6_K.gguf",
+    local_dir="./models"
+)
+hf_hub_download(
     repo_id="bartowski/Einstein-v6-7B-GGUF",
     filename="Einstein-v6-7B-Q6_K.gguf",
     local_dir="./models"
@@ -215,7 +220,8 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'Einstein-v6-7B-Q6_K.gguf'
+            'Einstein-v6-7B-Q6_K.gguf',
+            'dolphin-2.8-mistral-7b-v02-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

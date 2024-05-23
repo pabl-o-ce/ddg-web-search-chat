@@ -4,23 +4,29 @@ import subprocess
 import gradio as gr
 from huggingface_hub import hf_hub_download
 
-subprocess.run('pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124', shell=True)
+from duckduckgo_search import DDGS
+
+from trafilatura import fetch_url, extract
+
+subprocess.run(
+    'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',
+    shell=True)
 subprocess.run('pip install llama-cpp-agent==0.2.10', shell=True)
 
 hf_hub_download(
     repo_id="bartowski/Meta-Llama-3-70B-Instruct-GGUF",
     filename="Meta-Llama-3-70B-Instruct-Q3_K_M.gguf",
-    local_dir = "./models"
+    local_dir="./models"
 )
 hf_hub_download(
     repo_id="bartowski/Llama-3-8B-Synthia-v3.5-GGUF",
     filename="Llama-3-8B-Synthia-v3.5-f16.gguf",
-    local_dir = "./models"
+    local_dir="./models"
 )
 hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",
     filename="Mistral-7B-Instruct-v0.3-f32.gguf",
-    local_dir = "./models"
+    local_dir="./models"
 )
 
 css = """
@@ -41,6 +47,49 @@ css = """
 }
 """
 
+
+def get_website_content_from_url(url: str) -> str:
+    """
+    Get website content from a URL using Selenium and BeautifulSoup for improved content extraction and filtering.
+
+    Args:
+        url (str): URL to get website content from.
+
+    Returns:
+        str: Extracted content including title, main text, and tables.
+    """
+
+    try:
+        downloaded = fetch_url(url)
+
+        result = extract(downloaded, include_formatting=True, include_links=True, output_format='json', url=url)
+
+        if result:
+            result = json.loads(result)
+            return f'=========== Website Title: {result["title"]} ===========\n\n=========== Website URL: {url} ===========\n\n=========== Website Content ===========\n\n{result["raw_text"]}\n\n=========== Website Content End ===========\n\n'
+        else:
+            return ""
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
+
+
+def search_web(search_query: str):
+    """
+    Search the web for information.
+    Args:
+        search_query (str): Search query to search for.
+    """
+    results = DDGS().text(search_query, region='wt-wt', safesearch='off', timelimit='y', max_results=3)
+    result_string = ''
+    for res in results:
+        web_info = get_website_content_from_url(res['href'])
+        if web_info != "":
+            result_string += web_info
+
+    res = result_string.strip()
+    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res
+
+
 def get_messages_formatter_type(model_name):
     from llama_cpp_agent import MessagesFormatterType
     if "Llama" in model_name:
@@ -50,24 +99,32 @@ def get_messages_formatter_type(model_name):
     else:
         raise ValueError(f"Unsupported model: {model_name}")
 
+
+def write_message_to_user():
+    """
+    Let you write a message to the user.
+    """
+    return "Please write the message to the user."
+
+
 @spaces.GPU(duration=120)
 def respond(
-    message,
-    history: list[tuple[str, str]],
-    system_message,
-    max_tokens,
-    temperature,
-    top_p,
-    top_k,
-    repeat_penalty,
-    model,
+        message,
+        history: list[tuple[str, str]],
+        system_message,
+        max_tokens,
+        temperature,
+        top_p,
+        top_k,
+        repeat_penalty,
+        model,
 ):
     from llama_cpp import Llama
     from llama_cpp_agent import LlamaCppAgent
     from llama_cpp_agent.providers import LlamaCppPythonProvider
     from llama_cpp_agent.chat_history import BasicChatHistory
     from llama_cpp_agent.chat_history.messages import Roles
-
+    from llama_cpp_agent.llm_output_settings import LlmStructuredOutputSettings
     chat_template = get_messages_formatter_type(model)
 
     llm = Llama(
@@ -86,7 +143,7 @@ def respond(
         predefined_messages_formatter_type=chat_template,
         debug_output=True
     )
-    
+
     settings = provider.get_provider_default_settings()
     settings.temperature = temperature
     settings.top_k = top_k
@@ -94,7 +151,8 @@ def respond(
     settings.max_tokens = max_tokens
     settings.repeat_penalty = repeat_penalty
     settings.stream = True
-
+    output_settings = LlmStructuredOutputSettings.from_functions(
+        [search_web, write_message_to_user])
     messages = BasicChatHistory()
 
     for msn in history:
@@ -108,19 +166,26 @@ def respond(
         }
         messages.add_message(user)
         messages.add_message(assistant)
-    
+    result = agent.get_chat_response(message, llm_sampling_settings=settings, structured_output_settings=output_settings,
+                                     chat_history=messages,
+                                     print_output=False)
+    while True:
+        if result[0]["function"] == "write_message_to_user":
+            break
+        else:
+            result = agent.get_chat_response(result[0]["return_value"], role=Roles.tool, chat_history=messages,structured_output_settings=output_settings,
+                                             print_output=False)
+
     stream = agent.get_chat_response(
-        message,
-        llm_sampling_settings=settings,
-        chat_history=messages,
-        returns_streaming_generator=True,
+        result[0]["return_value"], role=Roles.tool, llm_sampling_settings=settings, chat_history=messages, returns_streaming_generator=True,
         print_output=False
     )
-    
+
     outputs = ""
     for output in stream:
         outputs += output
         yield outputs
+
 
 demo = gr.ChatInterface(
     respond,
@@ -150,15 +215,16 @@ demo = gr.ChatInterface(
             label="Repetition penalty",
         ),
         gr.Dropdown([
-                'Meta-Llama-3-70B-Instruct-Q3_K_M.gguf',
-                'Llama-3-8B-Synthia-v3.5-f16.gguf',
-                'Mistral-7B-Instruct-v0.3-f32.gguf'
-            ],
+            'Meta-Llama-3-70B-Instruct-Q3_K_M.gguf',
+            'Llama-3-8B-Synthia-v3.5-f16.gguf',
+            'Mistral-7B-Instruct-v0.3-f32.gguf'
+        ],
             value="Meta-Llama-3-70B-Instruct-Q3_K_M.gguf",
             label="Model"
         ),
     ],
-    theme=gr.themes.Soft(primary_hue="violet", secondary_hue="violet", neutral_hue="gray",font=[gr.themes.GoogleFont("Exo"), "ui-sans-serif", "system-ui", "sans-serif"]).set(
+    theme=gr.themes.Soft(primary_hue="violet", secondary_hue="violet", neutral_hue="gray",
+                         font=[gr.themes.GoogleFont("Exo"), "ui-sans-serif", "system-ui", "sans-serif"]).set(
         body_background_fill_dark="#111111",
         block_background_fill_dark="#111111",
         block_border_width="1px",

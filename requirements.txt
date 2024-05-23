@@ -1,2 +1,4 @@
 huggingface_hub==0.22.2
 scikit-build-core
+duckduckgo_search
+trafilatura

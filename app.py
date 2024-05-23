@@ -243,7 +243,7 @@ demo = gr.ChatInterface(
         undo_btn="Undo",
         clear_btn="Clear",
         submit_btn="Send",
-        description="Llama-cpp-agent: Chat multi llm selection"
+        description="Llama-cpp-agent: Chat Web Search DDG Agent"
     )
 
 if __name__ == "__main__":

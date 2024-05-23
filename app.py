@@ -215,7 +215,7 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'mixtral-8x7b-instruct-v0.1.Q6_K.gguf'
+            'Llama-3-8B-Instruct-262k-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

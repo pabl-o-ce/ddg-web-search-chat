@@ -54,7 +54,7 @@ PLACEHOLDER = """
     </figure>
     <div style="padding: .5rem 1.5rem;">
         <h2 style="text-align: left; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">llama-cpp-agent</h2>
-        <p style="text-align: left; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">The llama-cpp-agent single and parallel function calling execute functions using LLMs. Process text using agent chains with tools.</p>
+        <p style="text-align: left; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">The llama-cpp-agent framework you can engage in seamless conversations with LLMs. single and parallel function calling execute functions using LLMs. Process text using agent chains with tools.</p>
         <div style="display: flex; justify-content: flex-end;">
             <a href="https://discord.gg/sRMvWKrh" target="_blank" rel="noreferrer" style="padding: .5rem;">
                 <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 5 30.67 23.25">

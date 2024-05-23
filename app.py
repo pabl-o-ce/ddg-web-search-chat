@@ -133,7 +133,7 @@ def respond(
         n_threads=40,
         n_gpu_layers=81,
         n_batch=1024,
-        n_ctx=8192,
+        n_ctx=32768,
     )
     provider = LlamaCppPythonProvider(llm)
 
@@ -219,29 +219,32 @@ demo = gr.ChatInterface(
             'Llama-3-8B-Synthia-v3.5-f16.gguf',
             'Mistral-7B-Instruct-v0.3-f32.gguf'
         ],
-            value="Meta-Llama-3-70B-Instruct-Q3_K_M.gguf",
+            value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"
         ),
     ],
-    theme=gr.themes.Soft(primary_hue="violet", secondary_hue="violet", neutral_hue="gray",
-                         font=[gr.themes.GoogleFont("Exo"), "ui-sans-serif", "system-ui", "sans-serif"]).set(
-        body_background_fill_dark="#111111",
-        block_background_fill_dark="#111111",
-        block_border_width="1px",
-        block_title_background_fill_dark="#1e1c26",
-        input_background_fill_dark="#292733",
-        button_secondary_background_fill_dark="#24212b",
-        border_color_primary_dark="#343140",
-        background_fill_secondary_dark="#111111",
-        color_accent_soft_dark="transparent"
-    ),
-    css=css,
-    retry_btn="Retry",
-    undo_btn="Undo",
-    clear_btn="Clear",
-    submit_btn="Send",
-    description="Llama-cpp-agent: Chat multi llm selection"
-)
+    theme=gr.themes.Soft(
+        primary_hue="violet",
+        secondary_hue="violet",
+        neutral_hue="gray",
+        font=[gr.themes.GoogleFont("Exo"), "ui-sans-serif", "system-ui", "sans-serif"]).set(
+            body_background_fill_dark="#111111",
+            block_background_fill_dark="#111111",
+            block_border_width="1px",
+            block_title_background_fill_dark="#1e1c26",
+            input_background_fill_dark="#292733",
+            button_secondary_background_fill_dark="#24212b",
+            border_color_primary_dark="#343140",
+            background_fill_secondary_dark="#111111",
+            color_accent_soft_dark="transparent"
+        ),
+        css=css,
+        retry_btn="Retry",
+        undo_btn="Undo",
+        clear_btn="Clear",
+        submit_btn="Send",
+        description="Llama-cpp-agent: Chat multi llm selection"
+    )
 
 if __name__ == "__main__":
     demo.launch()

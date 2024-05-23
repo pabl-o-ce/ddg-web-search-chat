@@ -14,5 +14,6 @@ short_description: Chat llama-cpp-agent that can search the web.
 models:
   - mistralai/Mistral-7B-Instruct-v0.3
   - mistralai/Mixtral-8x7B-Instruct-v0.1
+---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference

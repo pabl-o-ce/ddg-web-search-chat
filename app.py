@@ -82,7 +82,7 @@ def search_web(search_query: str):
             result_string += web_info
 
     res = result_string.strip()
-    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res
+    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:32768]
 
 
 def get_messages_formatter_type(model_name):

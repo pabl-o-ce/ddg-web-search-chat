@@ -19,8 +19,8 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="bartowski/Einstein-v6-7B-GGUF",
-    filename="Einstein-v6-7B-Q6_K.gguf",
+    repo_id="TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF",
+    filename="mixtral-8x7b-instruct-v0.1.Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -90,6 +90,8 @@ def get_messages_formatter_type(model_name):
     if "Llama" in model_name:
         return MessagesFormatterType.LLAMA_3
     elif "Mistral" in model_name:
+        return MessagesFormatterType.MISTRAL
+    elif "mixtral" in model_name:
         return MessagesFormatterType.MISTRAL
     elif "Phi" in model_name:
         return MessagesFormatterType.PHI_3

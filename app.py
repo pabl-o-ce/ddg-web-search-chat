@@ -96,12 +96,12 @@ def get_messages_formatter_type(model_name):
         return MessagesFormatterType.LLAMA_3
     elif "Mistral" in model_name:
         return MessagesFormatterType.MISTRAL
-    elif "Einstein-v6-7B" in model_name:
-        return MessagesFormatterType.MISTRAL
+    elif "Einstein-v6-7B" in model_name or "dolphin" in model_name:
+        return MessagesFormatterType.CHATML
     elif "Phi" in model_name:
         return MessagesFormatterType.PHI_3
     else:
-        raise ValueError(f"Unsupported model: {model_name}")
+        return MessagesFormatterType.CHATML
 
 
 def write_message_to_user():

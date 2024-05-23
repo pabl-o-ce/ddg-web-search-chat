@@ -23,6 +23,11 @@ hf_hub_download(
     filename="Einstein-v6-7B-Q6_K.gguf",
     local_dir="./models"
 )
+hf_hub_download(
+    repo_id="crusoeai/dolphin-2.9-llama3-70b-GGUF",
+    filename="dolphin-2.9-llama3-70b.Q3_K_M.gguf",
+    local_dir="./models"
+)
 
 css = """
 .message-row {
@@ -42,6 +47,13 @@ css = """
 }
 """
 
+def get_context_by_model(model_name):
+    model_context_limits = {
+        "Mistral-7B-Instruct-v0.3-f32.gguf": 32000,
+        "Einstein-v6-7B-Q6_K.gguf": 32000,
+        "dolphin-2.9-llama3-70b.Q3_K_M.gguf": 8192
+    }
+    return model_context_limits.get(model_name, None)
 
 def get_website_content_from_url(url: str) -> str:
     """
@@ -82,7 +94,7 @@ def search_web(search_query: str):
             result_string += web_info
 
     res = result_string.strip()
-    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:32768]
+    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:8000]
 
 
 def get_messages_formatter_type(model_name):
@@ -215,7 +227,8 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'Einstein-v6-7B-Q6_K.gguf'
+            'Einstein-v6-7B-Q6_K.gguf',
+            'dolphin-2.9-llama3-70b.Q3_K_M.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

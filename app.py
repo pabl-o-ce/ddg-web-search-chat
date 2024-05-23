@@ -144,7 +144,7 @@ def respond(
         n_threads=40,
         n_gpu_layers=81,
         n_batch=1024,
-        n_ctx=32768,
+        n_ctx=8192,
     )
     provider = LlamaCppPythonProvider(llm)
 

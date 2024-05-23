@@ -19,8 +19,8 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="bartowski/Phi-3-medium-128k-instruct-GGUF",
-    filename="Phi-3-medium-128k-instruct-Q6_K.gguf",
+    repo_id="TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF",
+    filename="mixtral-8x7b-instruct-v0.1.Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -213,7 +213,7 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'Phi-3-medium-128k-instruct-Q6_K.gguf'
+            'mixtral-8x7b-instruct-v0.1.Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

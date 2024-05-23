@@ -19,8 +19,8 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF",
-    filename="mixtral-8x7b-instruct-v0.1.Q6_K.gguf",
+    repo_id="bartowski/Llama-3-8B-Instruct-262k-GGUF",
+    filename="Llama-3-8B-Instruct-262k-Q6_K.gguf",
     local_dir="./models"
 )
 

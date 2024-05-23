@@ -19,8 +19,8 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="bartowski/Llama-3-8B-Instruct-262k-GGUF",
-    filename="Llama-3-8B-Instruct-262k-Q6_K.gguf",
+    repo_id="bartowski/Einstein-v6-7B-GGUF",
+    filename="Einstein-v6-7B-Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -91,7 +91,7 @@ def get_messages_formatter_type(model_name):
         return MessagesFormatterType.LLAMA_3
     elif "Mistral" in model_name:
         return MessagesFormatterType.MISTRAL
-    elif "mixtral" in model_name:
+    elif "Einstein-v6-7B" in model_name:
         return MessagesFormatterType.MISTRAL
     elif "Phi" in model_name:
         return MessagesFormatterType.PHI_3
@@ -215,7 +215,7 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'Llama-3-8B-Instruct-262k-Q6_K.gguf'
+            'Einstein-v6-7B-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

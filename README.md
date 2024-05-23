@@ -13,6 +13,7 @@ fullWidth: true
 short_description: Chat llama-cpp-agent that can search the web.
 models:
   - mistralai/Mistral-7B-Instruct-v0.3
+  - microsoft/Phi-3-medium-128k-instruct
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference

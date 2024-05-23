@@ -79,7 +79,7 @@ def search_web(search_query: str):
     Args:
         search_query (str): Search query to search for.
     """
-    results = DDGS().text(search_query, region='wt-wt', safesearch='off', timelimit='y', max_results=3)
+    results = DDGS().text(search_query, region='wt-wt', safesearch='off', timelimit='y', max_results=1)
     result_string = ''
     for res in results:
         web_info = get_website_content_from_url(res['href'])

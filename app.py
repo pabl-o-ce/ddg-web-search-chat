@@ -126,7 +126,7 @@ def respond(
 
     llm = Llama(
         model_path=f"models/{model}",
-        flash_attn=True,
+        flash_attn=False,
         n_threads=40,
         n_gpu_layers=81,
         n_batch=1024,

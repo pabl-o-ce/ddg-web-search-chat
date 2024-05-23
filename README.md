@@ -1,5 +1,5 @@
 ---
-title: Chat with web search
+title: Chat with LLM Agent that can Web Search
 emoji: 🗿
 colorFrom: red
 colorTo: purple
@@ -10,7 +10,7 @@ pinned: true
 license: apache-2.0
 header: mini
 fullWidth: true
-short_description: Using llama-cpp-agent web search chat
+short_description: Chat with a LLM Agent that can search the web.
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference

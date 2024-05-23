@@ -174,7 +174,7 @@ def respond(
         else:
             result = agent.get_chat_response(result[0]["return_value"], role=Roles.tool, chat_history=messages,structured_output_settings=output_settings,
                                              print_output=False)
-    print(history)
+
     stream = agent.get_chat_response(
         result[0]["return_value"], role=Roles.tool, llm_sampling_settings=settings, chat_history=messages, returns_streaming_generator=True,
         print_output=False

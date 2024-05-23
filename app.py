@@ -14,18 +14,13 @@ subprocess.run(
 subprocess.run('pip install llama-cpp-agent==0.2.10', shell=True)
 
 hf_hub_download(
-    repo_id="bartowski/Meta-Llama-3-70B-Instruct-GGUF",
-    filename="Meta-Llama-3-70B-Instruct-Q3_K_M.gguf",
-    local_dir="./models"
-)
-hf_hub_download(
-    repo_id="bartowski/Llama-3-8B-Synthia-v3.5-GGUF",
-    filename="Llama-3-8B-Synthia-v3.5-f16.gguf",
-    local_dir="./models"
-)
-hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",
     filename="Mistral-7B-Instruct-v0.3-f32.gguf",
+    local_dir="./models"
+)
+hf_hub_download(
+    repo_id="bartowski/Phi-3-medium-128k-instruct-GGUF",
+    filename="Phi-3-medium-128k-instruct-Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -215,9 +210,8 @@ demo = gr.ChatInterface(
             label="Repetition penalty",
         ),
         gr.Dropdown([
-            'Meta-Llama-3-70B-Instruct-Q3_K_M.gguf',
-            'Llama-3-8B-Synthia-v3.5-f16.gguf',
-            'Mistral-7B-Instruct-v0.3-f32.gguf'
+            'Mistral-7B-Instruct-v0.3-f32.gguf',
+            'Phi-3-medium-128k-instruct-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

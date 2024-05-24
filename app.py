@@ -6,7 +6,7 @@ from huggingface_hub import hf_hub_download
 from duckduckgo_search import DDGS
 from trafilatura import fetch_url, extract
 
-model_selected = "Mistral-7B-Instruct-v0.3-f32.gguf"
+model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
 
 subprocess.run(
     'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',

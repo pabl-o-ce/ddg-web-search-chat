@@ -257,7 +257,7 @@ demo = gr.ChatInterface(
             'Meta-Llama-3-8B-Instruct-Q6_K.gguf',
             'aya-23-8B-Q6_K.gguf'
         ],
-            value="Mistral-7B-Instruct-v0.3-f32.gguf",
+            value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
             label="Model"
         ),
     ],

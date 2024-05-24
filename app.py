@@ -3,10 +3,10 @@ import json
 import subprocess
 import gradio as gr
 from huggingface_hub import hf_hub_download
-
 from duckduckgo_search import DDGS
-
 from trafilatura import fetch_url, extract
+
+model_selected = "Mistral-7B-Instruct-v0.3-f32.gguf"
 
 subprocess.run(
     'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',
@@ -19,13 +19,13 @@ hf_hub_download(
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="bartowski/Einstein-v6-7B-GGUF",
-    filename="Einstein-v6-7B-Q6_K.gguf",
+    repo_id="crusoeai/dolphin-2.9.1-mixtral-1x22b-GGUF",
+    filename="dolphin-2.9.1-mixtral-1x22b.Q6_K.gguf",
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="crusoeai/dolphin-2.9-llama3-70b-GGUF",
-    filename="dolphin-2.9-llama3-70b.Q3_K_M.gguf",
+    repo_id="crusoeai/dolphin-2.9.1-llama-3-8b-GGUF",
+    filename="dolphin-2.9.1-llama-3-8b.Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -75,9 +75,9 @@ PLACEHOLDER = """
 
 def get_context_by_model(model_name):
     model_context_limits = {
-        "Mistral-7B-Instruct-v0.3-f32.gguf": 32000,
-        "Einstein-v6-7B-Q6_K.gguf": 32000,
-        "dolphin-2.9-llama3-70b.Q3_K_M.gguf": 8192
+        "Mistral-7B-Instruct-v0.3-f32.gguf": 32768,
+        "dolphin-2.9.1-mixtral-1x22b.Q6_K.gguf": 16384,
+        "dolphin-2.9.1-llama-3-8b.Q6_K.gguf": 8192
     }
     return model_context_limits.get(model_name, None)
 
@@ -120,7 +120,7 @@ def search_web(search_query: str):
             result_string += web_info
 
     res = result_string.strip()
-    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:8000]
+    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:get_context_by_model(model_selected)]
 
 
 def get_messages_formatter_type(model_name):
@@ -163,6 +163,7 @@ def respond(
     from llama_cpp_agent.chat_history.messages import Roles
     from llama_cpp_agent.llm_output_settings import LlmStructuredOutputSettings
     chat_template = get_messages_formatter_type(model)
+    model_selected = model
 
     llm = Llama(
         model_path=f"models/{model}",
@@ -170,7 +171,7 @@ def respond(
         n_threads=40,
         n_gpu_layers=81,
         n_batch=1024,
-        n_ctx=8192,
+        n_ctx=get_context_by_model(model),
     )
     provider = LlamaCppPythonProvider(llm)
 
@@ -253,8 +254,8 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'Einstein-v6-7B-Q6_K.gguf',
-            'dolphin-2.9-llama3-70b.Q3_K_M.gguf'
+            'dolphin-2.9.1-mixtral-1x22b.Q6_K.gguf',
+            'dolphin-2.9.1-llama-3-8b.Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

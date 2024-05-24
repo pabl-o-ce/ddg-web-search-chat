@@ -23,11 +23,6 @@ hf_hub_download(
     filename="Meta-Llama-3-8B-Instruct-Q6_K.gguf",
     local_dir="./models"
 )
-hf_hub_download(
-    repo_id="bartowski/aya-23-8B-GGUF",
-    filename="aya-23-8B-Q6_K.gguf",
-    local_dir="./models"
-)
 
 css = """
 .message-row {
@@ -76,8 +71,7 @@ PLACEHOLDER = """
 def get_context_by_model(model_name):
     model_context_limits = {
         "Mistral-7B-Instruct-v0.3-Q6_K.gguf": 32768,
-        "Meta-Llama-3-8B-Instruct-Q6_K.gguf": 8192,
-        "aya-23-8B-Q6_K.gguf": 8192
+        "Meta-Llama-3-8B-Instruct-Q6_K.gguf": 8192
     }
     return model_context_limits.get(model_name, None)
 
@@ -254,8 +248,7 @@ demo = gr.ChatInterface(
         ),
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
-            'Meta-Llama-3-8B-Instruct-Q6_K.gguf',
-            'aya-23-8B-Q6_K.gguf'
+            'Meta-Llama-3-8B-Instruct-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
             label="Model"

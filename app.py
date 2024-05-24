@@ -15,17 +15,17 @@ subprocess.run('pip install llama-cpp-agent==0.2.10', shell=True)
 
 hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",
-    filename="Mistral-7B-Instruct-v0.3-f32.gguf",
+    filename="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="crusoeai/dolphin-2.9.1-mixtral-1x22b-GGUF",
-    filename="dolphin-2.9.1-mixtral-1x22b.Q6_K.gguf",
+    repo_id="bartowski/Meta-Llama-3-8B-Instruct-GGUF",
+    filename="Meta-Llama-3-8B-Instruct-Q6_K.gguf",
     local_dir="./models"
 )
 hf_hub_download(
-    repo_id="crusoeai/dolphin-2.9.1-llama-3-8b-GGUF",
-    filename="dolphin-2.9.1-llama-3-8b.Q6_K.gguf",
+    repo_id="bartowski/aya-23-8B-GGUF",
+    filename="aya-23-8B-Q6_K.gguf",
     local_dir="./models"
 )
 
@@ -75,9 +75,9 @@ PLACEHOLDER = """
 
 def get_context_by_model(model_name):
     model_context_limits = {
-        "Mistral-7B-Instruct-v0.3-f32.gguf": 32768,
-        "dolphin-2.9.1-mixtral-1x22b.Q6_K.gguf": 16384,
-        "dolphin-2.9.1-llama-3-8b.Q6_K.gguf": 8192
+        "Mistral-7B-Instruct-v0.3-Q6_K.gguf": 32768,
+        "Meta-Llama-3-8B-Instruct-Q6_K.gguf": 8192,
+        "aya-23-8B-Q6_K.gguf": 8192
     }
     return model_context_limits.get(model_name, None)
 
@@ -125,7 +125,7 @@ def search_web(search_query: str):
 
 def get_messages_formatter_type(model_name):
     from llama_cpp_agent import MessagesFormatterType
-    if "Llama" in model_name:
+    if "Meta" in model_name or "aya" in model_name:
         return MessagesFormatterType.LLAMA_3
     elif "Mistral" in model_name:
         return MessagesFormatterType.MISTRAL
@@ -253,9 +253,9 @@ demo = gr.ChatInterface(
             label="Repetition penalty",
         ),
         gr.Dropdown([
-            'Mistral-7B-Instruct-v0.3-f32.gguf',
-            'dolphin-2.9.1-mixtral-1x22b.Q6_K.gguf',
-            'dolphin-2.9.1-llama-3-8b.Q6_K.gguf'
+            'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
+            'Meta-Llama-3-8B-Instruct-Q6_K.gguf',
+            'aya-23-8B-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-f32.gguf",
             label="Model"

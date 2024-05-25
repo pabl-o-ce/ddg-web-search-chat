@@ -46,7 +46,7 @@ css = """
     background: #1e1c26 !important;
 }
 .dark.assistant.dark, .dark.pending.dark {
-    background: #111111 !important;
+    background: #0c0505 !important;
 }
 """
 
@@ -273,14 +273,14 @@ demo = gr.ChatInterface(
         secondary_hue="violet",
         neutral_hue="gray",
         font=[gr.themes.GoogleFont("Exo"), "ui-sans-serif", "system-ui", "sans-serif"]).set(
-            body_background_fill_dark="#111111",
-            block_background_fill_dark="#111111",
+            body_background_fill_dark="#0c0505",
+            block_background_fill_dark="#0c0505",
             block_border_width="1px",
             block_title_background_fill_dark="#1e1c26",
             input_background_fill_dark="#292733",
             button_secondary_background_fill_dark="#24212b",
             border_color_primary_dark="#343140",
-            background_fill_secondary_dark="#111111",
+            background_fill_secondary_dark="#0c0505",
             color_accent_soft_dark="transparent"
         ),
         css=css,

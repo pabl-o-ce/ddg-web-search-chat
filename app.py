@@ -57,7 +57,7 @@ PLACEHOLDER = """
     </figure>
     <div style="padding: .5rem 1.5rem;">
         <h2 style="text-align: left; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">llama-cpp-agent</h2>
-        <p style="text-align: left; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">The llama-cpp-agent framework you can engage in seamless conversations with most `open source LLMs`, even small ones. Execute functions using LLMs, single and parallel function calling. Process text using agent chains, with tools.</p>
+        <p style="text-align: left; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">DDG Agent offers a convenient and secure way for users to access web-based information.</p>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; flex-flow: column; justify-content: space-between;">
                 <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(229, 70, 77, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #f88181; margin-bottom: 2.5px;">

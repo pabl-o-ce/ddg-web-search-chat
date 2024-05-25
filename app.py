@@ -14,10 +14,10 @@ examples = [
     ["filetype:pdf intitle:python"]
 ]
 
-subprocess.run(
-    'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',
-    shell=True)
-subprocess.run('pip install llama-cpp-agent==0.2.10', shell=True)
+# subprocess.run(
+#     'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',
+#     shell=True)
+# subprocess.run('pip install llama-cpp-agent==0.2.10', shell=True)
 
 hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",

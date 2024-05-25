@@ -7,6 +7,8 @@ from duckduckgo_search import DDGS
 from trafilatura import fetch_url, extract
 
 model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
+examples = [["How many NBA championship wins do the Chicago Bulls hold?"],
+            ["Write a report on the top 5 events in the UK summer 2024."]]
 
 subprocess.run(
     'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',
@@ -274,6 +276,7 @@ demo = gr.ChatInterface(
         undo_btn="Undo",
         clear_btn="Clear",
         submit_btn="Send",
+        examples = (examples),
         description="Llama-cpp-agent: Chat Web Search DDG Agent",
         chatbot=gr.Chatbot(scale=1, placeholder=PLACEHOLDER)
     )

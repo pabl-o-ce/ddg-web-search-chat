@@ -1,6 +1,6 @@
 ---
 title: Chat Web Search DDG Agent
-emoji: 🦆
+emoji: 🗿
 colorFrom: yellow
 colorTo: purple
 sdk: gradio

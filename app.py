@@ -277,9 +277,9 @@ demo = gr.ChatInterface(
             block_background_fill_dark="#0c0505",
             block_border_width="1px",
             block_title_background_fill_dark="#1e1c26",
-            input_background_fill_dark="#292733",
-            button_secondary_background_fill_dark="#24212b",
-            border_color_primary_dark="#343140",
+            input_background_fill_dark="#140b0b",
+            button_secondary_background_fill_dark="#140b0b",
+            border_color_primary_dark="#3f211d",
             background_fill_secondary_dark="#0c0505",
             color_accent_soft_dark="transparent"
         ),

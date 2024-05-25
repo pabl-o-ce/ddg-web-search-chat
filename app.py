@@ -121,7 +121,7 @@ def search_web(search_query: str):
             result_string += web_info
 
     res = result_string.strip()
-    return "Based on the following results, Summarize and answer the previous user query:\nResults:\n\n" + res[:get_context_by_model(model_selected)]
+    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:get_context_by_model(model_selected)]
 
 
 def get_messages_formatter_type(model_name):
@@ -223,7 +223,7 @@ def respond(
 demo = gr.ChatInterface(
     respond,
     additional_inputs=[
-        gr.Textbox(value="You are an advanced AI agent for summarizing and answer search engine result.", label="System message"),
+        gr.Textbox(value="You are a helpful assistant. Use additional available information you have access to when giving a response. Always give detailed and long responses. Format your response, well structured in markdown format.", label="System message"),
         gr.Slider(minimum=1, maximum=4096, value=2048, step=1, label="Max tokens"),
         gr.Slider(minimum=0.1, maximum=4.0, value=0.7, step=0.1, label="Temperature"),
         gr.Slider(

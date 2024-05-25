@@ -269,7 +269,7 @@ demo = gr.ChatInterface(
         ),
     ],
     theme=gr.themes.Soft(
-        primary_hue="amber",
+        primary_hue="yellow",
         secondary_hue="violet",
         neutral_hue="gray",
         font=[gr.themes.GoogleFont("Exo"), "ui-sans-serif", "system-ui", "sans-serif"]).set(

@@ -276,10 +276,10 @@ demo = gr.ChatInterface(
             body_background_fill_dark="#0c0505",
             block_background_fill_dark="#0c0505",
             block_border_width="1px",
-            block_title_background_fill_dark="#1e1c26",
+            block_title_background_fill_dark="#1b0f0f",
             input_background_fill_dark="#140b0b",
             button_secondary_background_fill_dark="#140b0b",
-            border_color_primary_dark="#3f211d",
+            border_color_primary_dark="#1b0f0f",
             background_fill_secondary_dark="#0c0505",
             color_accent_soft_dark="transparent"
         ),

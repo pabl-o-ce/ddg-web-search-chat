@@ -160,13 +160,13 @@ def write_message_to_user():
 def respond(
         message,
         history: list[tuple[str, str]],
+        model,
         system_message,
         max_tokens,
         temperature,
         top_p,
         top_k,
         repeat_penalty,
-        model,
 ):
     chat_template = get_messages_formatter_type(model)
     model_selected = model
@@ -236,6 +236,13 @@ def respond(
 demo = gr.ChatInterface(
     respond,
     additional_inputs=[
+        gr.Dropdown([
+            'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
+            'Meta-Llama-3-8B-Instruct-Q6_K.gguf'
+        ],
+            value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
+            label="Model"
+        ),
         gr.Textbox(value="You are a helpful assistant. Use additional available information you have access to when giving a response. Always give detailed and long responses. Format your response, well structured in markdown format.", label="System message"),
         gr.Slider(minimum=1, maximum=4096, value=2048, step=1, label="Max tokens"),
         gr.Slider(minimum=0.1, maximum=4.0, value=0.7, step=0.1, label="Temperature"),
@@ -259,13 +266,6 @@ demo = gr.ChatInterface(
             value=1.1,
             step=0.1,
             label="Repetition penalty",
-        ),
-        gr.Dropdown([
-            'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
-            'Meta-Llama-3-8B-Instruct-Q6_K.gguf'
-        ],
-            value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
-            label="Model"
         ),
     ],
     theme=gr.themes.Soft(

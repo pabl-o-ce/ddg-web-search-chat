@@ -7,9 +7,12 @@ from duckduckgo_search import DDGS
 from trafilatura import fetch_url, extract
 
 model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
-examples = [["Latest uplifting news"],
-            ["Latest news site:bloomberg.com"],
-            ["Where I can find best hotel in Quito, Ecuador"]]
+examples = [
+    ["Latest uplifting news"],
+    ["Latest news site:bloomberg.com"],
+    ["Where I can find best hotel in Galapagos, Ecuador intitle:hotel"],
+    ["file type:pdf book title:python"]
+]
 
 subprocess.run(
     'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',

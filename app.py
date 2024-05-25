@@ -10,8 +10,7 @@ from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
 from llama_cpp_agent.llm_output_settings import LlmStructuredOutputSettings
 from huggingface_hub import hf_hub_download
-from duckduckgo_search import DDGS
-from trafilatura import fetch_url, extract
+from web_search import WebSearchTool
 
 model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
 examples = [
@@ -93,48 +92,6 @@ def get_context_by_model(model_name):
     }
     return model_context_limits.get(model_name, None)
 
-def get_website_content_from_url(url: str) -> str:
-    """
-    Get website content from a URL using Selenium and BeautifulSoup for improved content extraction and filtering.
-
-    Args:
-        url (str): URL to get website content from.
-
-    Returns:
-        str: Extracted content including title, main text, and tables.
-    """
-
-    try:
-        downloaded = fetch_url(url)
-
-        result = extract(downloaded, include_formatting=True, include_links=True, output_format='json', url=url)
-
-        if result:
-            result = json.loads(result)
-            return f'=========== Website Title: {result["title"]} ===========\n\n=========== Website URL: {url} ===========\n\n=========== Website Content ===========\n\n{result["raw_text"]}\n\n=========== Website Content End ===========\n\n'
-        else:
-            return ""
-    except Exception as e:
-        return f"An error occurred: {str(e)}"
-
-
-def search_web(search_query: str):
-    """
-    Search the web for information.
-    Args:
-        search_query (str): Search query to search for.
-    """
-    results = DDGS().text(search_query, region='wt-wt', safesearch='off', timelimit='y', max_results=3)
-    result_string = ''
-    for res in results:
-        web_info = get_website_content_from_url(res['href'])
-        if web_info != "":
-            result_string += web_info
-
-    res = result_string.strip()
-    return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:get_context_by_model(model_selected)]
-
-
 def get_messages_formatter_type(model_name):
     from llama_cpp_agent import MessagesFormatterType
     if "Meta" in model_name or "aya" in model_name:
@@ -189,7 +146,7 @@ def respond(
         predefined_messages_formatter_type=chat_template,
         debug_output=True
     )
-
+    search_tool = WebSearchTool(provider, chat_template, get_context_by_model(model))
     settings = provider.get_provider_default_settings()
     settings.temperature = temperature
     settings.top_k = top_k
@@ -198,7 +155,7 @@ def respond(
     settings.repeat_penalty = repeat_penalty
     settings.stream = True
     output_settings = LlmStructuredOutputSettings.from_functions(
-        [search_web, write_message_to_user])
+        [search_tool.get_tool(), write_message_to_user])
     messages = BasicChatHistory()
 
     for msn in history:

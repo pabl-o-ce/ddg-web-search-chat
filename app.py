@@ -11,7 +11,7 @@ examples = [
     ["Latest uplifting news"],
     ["Latest news site:bloomberg.com"],
     ["Where I can find best hotel in Galapagos, Ecuador intitle:hotel"],
-    ["file type:pdf book title:python"]
+    ["filetype:pdf intitle:python"]
 ]
 
 subprocess.run(

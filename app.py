@@ -161,7 +161,7 @@ def respond(
     chat_template = get_messages_formatter_type(model)
     model_selected = model
 
-    system_message += f" {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))}"
+    system_message += f" {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))}"
 
     llm = Llama(
         model_path=f"models/{model}",

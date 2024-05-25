@@ -15,7 +15,7 @@ from web_search import WebSearchTool
 model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
 examples = [
     ["latest news about Yann LeCun"],
-    ["Latest news site:huggingface.co"],
+    ["Latest news site:github.blog"],
     ["Where I can find best hotel in Galapagos, Ecuador intitle:hotel"],
     ["filetype:pdf intitle:python"]
 ]

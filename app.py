@@ -2,6 +2,12 @@ import spaces
 import json
 import subprocess
 import gradio as gr
+from llama_cpp import Llama
+from llama_cpp_agent import LlamaCppAgent
+from llama_cpp_agent.providers import LlamaCppPythonProvider
+from llama_cpp_agent.chat_history import BasicChatHistory
+from llama_cpp_agent.chat_history.messages import Roles
+from llama_cpp_agent.llm_output_settings import LlmStructuredOutputSettings
 from huggingface_hub import hf_hub_download
 from duckduckgo_search import DDGS
 from trafilatura import fetch_url, extract
@@ -13,11 +19,6 @@ examples = [
     ["Where I can find best hotel in Galapagos, Ecuador intitle:hotel"],
     ["filetype:pdf intitle:python"]
 ]
-
-# subprocess.run(
-#     'pip install llama-cpp-python==0.2.75 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124',
-#     shell=True)
-# subprocess.run('pip install llama-cpp-agent==0.2.10', shell=True)
 
 hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",
@@ -156,12 +157,6 @@ def respond(
         repeat_penalty,
         model,
 ):
-    from llama_cpp import Llama
-    from llama_cpp_agent import LlamaCppAgent
-    from llama_cpp_agent.providers import LlamaCppPythonProvider
-    from llama_cpp_agent.chat_history import BasicChatHistory
-    from llama_cpp_agent.chat_history.messages import Roles
-    from llama_cpp_agent.llm_output_settings import LlmStructuredOutputSettings
     chat_template = get_messages_formatter_type(model)
     model_selected = model
 

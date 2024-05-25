@@ -40,10 +40,10 @@ css = """
     border-radius: 6px !important;
 }
 .dark.message-bubble-border {
-    border-color: #343140 !important;
+    border-color: #1b0f0f !important;
 }
 .dark.user {
-    background: #1e1c26 !important;
+    background: #140b0b !important;
 }
 .dark.assistant.dark, .dark.pending.dark {
     background: #0c0505 !important;

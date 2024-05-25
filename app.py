@@ -1,6 +1,7 @@
 import spaces
 import json
 import subprocess
+import time
 import gradio as gr
 from llama_cpp import Llama
 from llama_cpp_agent import LlamaCppAgent
@@ -159,6 +160,8 @@ def respond(
 ):
     chat_template = get_messages_formatter_type(model)
     model_selected = model
+
+    system_message += f" {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))}"
 
     llm = Llama(
         model_path=f"models/{model}",

@@ -44,7 +44,7 @@ class WebSearchTool:
                 result_string += web_info
 
         res = result_string.strip()
-        return "Based on the following results, answer the previous user query:\nResults:\n\n" + res[:self.context_character_limit]
+        return "Please combine this summarizes results below, into one summary as bullet points:\nResults:\n\n" + res[:self.context_character_limit]
 
     def get_tool(self):
         return self.search_web

@@ -44,7 +44,7 @@ class WebSearchTool:
                 result_string += web_info
 
         res = result_string.strip()
-        return "Please combine this summarizes results below, into one summary as mardown document:\nResults:\n\n" + res[:self.context_character_limit]
+        return "Please combine this summarizes results below, into one summary as markdown document:\nResults:\n\n" + res[:self.context_character_limit]
 
     def get_tool(self):
         return self.search_web

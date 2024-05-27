@@ -169,7 +169,7 @@ def respond(
     settings.top_p = top_p
 
     settings.max_tokens = max_tokens
-    settings.repeat_penalty = repetition_penalty
+    settings.repeat_penalty = repeat_penalty
 
     output_settings = LlmStructuredOutputSettings.from_functions(
         [search_tool.get_tool()]

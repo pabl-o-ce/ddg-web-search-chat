@@ -54,13 +54,10 @@ css = """
 }
 """
 
-# <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(79, 70, 229, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #60a5fa; margin-top: 2.5px;">
-#     Meta Llama 3 8B Instruct
-# </span>
 PLACEHOLDER = """
 <div class="message-bubble-border" style="display:flex; max-width: 600px; border-width: 1px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px);">
     <figure style="margin: 0;">
-        <img src="https://github.com/Maximilian-Winter/llama-cpp-agent/blob/master/logo/logo_orange.png?raw=true" alt="Logo" style="width: 100%; height: 100%; border-radius: 8px;">
+        <img src="https://huggingface.co/spaces/poscye/ddg-web-search-chat/resolve/main/logo.jpg" alt="Logo" style="width: 100%; height: 100%; border-radius: 8px;">
     </figure>
     <div style="padding: .5rem 1.5rem;">
         <h2 style="text-align: left; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">llama-cpp-agent</h2>
@@ -69,6 +66,9 @@ PLACEHOLDER = """
             <div style="display: flex; flex-flow: column; justify-content: space-between;">
                 <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(229, 70, 77, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #f88181; margin-bottom: 2.5px;">
                     Mistral 7B Instruct v0.3
+                </span>
+                <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(79, 70, 229, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #60a5fa; margin-top: 2.5px;">
+                    Meta Llama 3 8B Instruct
                 </span>
             </div>
             <div style="display: flex; justify-content: flex-end; align-items: center;">
@@ -122,6 +122,7 @@ def write_message_to_user():
 def respond(
     message,
     history: list[tuple[str, str]],
+    model,
     system_message,
     max_tokens,
     temperature,
@@ -131,7 +132,7 @@ def respond(
 ):
     chat_template = get_messages_formatter_type(model)
     llm = Llama(
-        model_path=f"models/{model_selected}",
+        model_path=f"models/{model}",
         flash_attn=True,
         n_threads=40,
         n_gpu_layers=81,
@@ -229,13 +230,13 @@ def respond(
 demo = gr.ChatInterface(
     respond,
     additional_inputs=[
-        # gr.Dropdown([
-        #     'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
-        #     'Meta-Llama-3-8B-Instruct-Q6_K.gguf'
-        # ],
-        #     value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
-        #     label="Model"
-        # ),
+        gr.Dropdown([
+            'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
+            'Meta-Llama-3-8B-Instruct-Q6_K.gguf'
+        ],
+            value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
+            label="Model"
+        ),
         gr.Textbox(value=web_search_system_prompt, label="System message"),
         gr.Slider(minimum=1, maximum=4096, value=2048, step=1, label="Max tokens"),
         gr.Slider(minimum=0.1, maximum=1.0, value=0.45, step=0.1, label="Temperature"),

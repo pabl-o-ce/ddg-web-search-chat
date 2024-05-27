@@ -239,7 +239,7 @@ demo = gr.ChatInterface(
         ),
         gr.Textbox(value=web_search_system_prompt, label="System message"),
         gr.Slider(minimum=1, maximum=4096, value=2048, step=1, label="Max tokens"),
-        gr.Slider(minimum=0.1, maximum=4.0, value=0.7, step=0.1, label="Temperature"),
+        gr.Slider(minimum=0.1, maximum=1.0, value=0.45, step=0.1, label="Temperature"),
         gr.Slider(
             minimum=0.1,
             maximum=1.0,

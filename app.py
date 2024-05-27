@@ -1,16 +1,21 @@
 import spaces
-import json
-import subprocess
-import time
+import logging
 import gradio as gr
+from huggingface_hub import hf_hub_download
+
 from llama_cpp import Llama
-from llama_cpp_agent import LlamaCppAgent
 from llama_cpp_agent.providers import LlamaCppPythonProvider
+from llama_cpp_agent import LlamaCppAgent
 from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
-from llama_cpp_agent.llm_output_settings import LlmStructuredOutputSettings
-from huggingface_hub import hf_hub_download
-from web_search import WebSearchTool
+from llama_cpp_agent.llm_output_settings import (
+    LlmStructuredOutputSettings,
+    LlmStructuredOutputType,
+)
+from llama_cpp_agent.tools import WebSearchTool
+from llama_cpp_agent.prompt_templates import web_search_system_prompt, research_system_prompt
+from style import css, PLACEHOLDER
+from utils import CitingSources
 
 model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
 examples = [
@@ -115,21 +120,17 @@ def write_message_to_user():
 
 @spaces.GPU(duration=120)
 def respond(
-        message,
-        history: list[tuple[str, str]],
-        model,
-        system_message,
-        max_tokens,
-        temperature,
-        top_p,
-        top_k,
-        repeat_penalty,
+    message,
+    history: list[tuple[str, str]],
+    model,
+    system_message,
+    max_tokens,
+    temperature,
+    top_p,
+    top_k,
+    repeat_penalty,
 ):
     chat_template = get_messages_formatter_type(model)
-    model_selected = model
-
-    system_message += f" {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))}"
-
     llm = Llama(
         model_path=f"models/{model}",
         flash_attn=True,
@@ -139,55 +140,91 @@ def respond(
         n_ctx=get_context_by_model(model),
     )
     provider = LlamaCppPythonProvider(llm)
-
-    agent = LlamaCppAgent(
-        provider,
-        system_prompt=f"{system_message}",
-        predefined_messages_formatter_type=chat_template,
-        debug_output=True
+    logging.info(f"Loaded chat examples: {chat_template}")
+    search_tool = WebSearchTool(
+        llm_provider=provider,
+        message_formatter_type=chat_template,
+        max_tokens_search_results=12000,
+        max_tokens_per_summary=2048,
     )
-    search_tool = WebSearchTool(provider, chat_template, get_context_by_model(model))
+
+    web_search_agent = LlamaCppAgent(
+        provider,
+        system_prompt=web_search_system_prompt,
+        predefined_messages_formatter_type=chat_template,
+        debug_output=True,
+    )
+
+    answer_agent = LlamaCppAgent(
+        provider,
+        system_prompt=research_system_prompt,
+        predefined_messages_formatter_type=chat_template,
+        debug_output=True,
+    )
+
     settings = provider.get_provider_default_settings()
+    settings.stream = False
     settings.temperature = temperature
     settings.top_k = top_k
     settings.top_p = top_p
+
     settings.max_tokens = max_tokens
-    settings.repeat_penalty = repeat_penalty
-    settings.stream = True
+    settings.repeat_penalty = repetition_penalty
+
     output_settings = LlmStructuredOutputSettings.from_functions(
-        [search_tool.get_tool(), write_message_to_user])
+        [search_tool.get_tool()]
+    )
+
     messages = BasicChatHistory()
 
     for msn in history:
-        user = {
-            'role': Roles.user,
-            'content': msn[0]
-        }
-        assistant = {
-            'role': Roles.assistant,
-            'content': msn[1]
-        }
+        user = {"role": Roles.user, "content": msn[0]}
+        assistant = {"role": Roles.assistant, "content": msn[1]}
         messages.add_message(user)
         messages.add_message(assistant)
-    result = agent.get_chat_response(message, llm_sampling_settings=settings, structured_output_settings=output_settings,
-                                     chat_history=messages,
-                                     print_output=False)
-    while True:
-        if result[0]["function"] == "write_message_to_user":
-            break
-        else:
-            result = agent.get_chat_response(result[0]["return_value"], role=Roles.tool, chat_history=messages,structured_output_settings=output_settings,
-                                             print_output=False)
 
-    stream = agent.get_chat_response(
-        result[0]["return_value"], role=Roles.tool, llm_sampling_settings=settings, chat_history=messages, returns_streaming_generator=True,
-        print_output=False
+    result = web_search_agent.get_chat_response(
+        message,
+        llm_sampling_settings=settings,
+        structured_output_settings=output_settings,
+        add_message_to_chat_history=False,
+        add_response_to_chat_history=False,
+        print_output=False,
     )
 
     outputs = ""
-    for output in stream:
-        outputs += output
+
+    settings.stream = True
+    response_text = answer_agent.get_chat_response(
+        f"Write a detailed and complete research document that fulfills the following user request: '{message}', based on the information from the web below.\n\n" +
+        result[0]["return_value"],
+        role=Roles.tool,
+        llm_sampling_settings=settings,
+        chat_history=messages,
+        returns_streaming_generator=True,
+        print_output=False,
+    )
+
+    for text in response_text:
+        outputs += text
         yield outputs
+
+    output_settings = LlmStructuredOutputSettings.from_pydantic_models(
+        [CitingSources], LlmStructuredOutputType.object_instance
+    )
+
+    citing_sources = answer_agent.get_chat_response(
+        "Cite the sources you used in your response.",
+        role=Roles.tool,
+        llm_sampling_settings=settings,
+        chat_history=messages,
+        returns_streaming_generator=False,
+        structured_output_settings=output_settings,
+        print_output=False,
+    )
+    outputs += "\n\nSources:\n"
+    outputs += "\n".join(citing_sources.sources)
+    yield outputs
 
 
 demo = gr.ChatInterface(
@@ -200,7 +237,7 @@ demo = gr.ChatInterface(
             value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
             label="Model"
         ),
-        gr.Textbox(value="You are a helpful assistant. Use additional available information you have access to when giving a response. Always give detailed and long responses. Format your response, well structured in markdown format.", label="System message"),
+        gr.Textbox(value=web_search_system_prompt, label="System message"),
         gr.Slider(minimum=1, maximum=4096, value=2048, step=1, label="Max tokens"),
         gr.Slider(minimum=0.1, maximum=4.0, value=0.7, step=0.1, label="Temperature"),
         gr.Slider(
@@ -247,6 +284,7 @@ demo = gr.ChatInterface(
         submit_btn="Send",
         examples = (examples),
         description="Llama-cpp-agent: Chat Web Search DDG Agent",
+        analytics_enabled=False,
         chatbot=gr.Chatbot(scale=1, placeholder=PLACEHOLDER)
     )
 

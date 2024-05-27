@@ -4,3 +4,4 @@ https://github.com/abetlen/llama-cpp-python/releases/download/v0.2.76-cu124/llam
 llama-cpp-agent>=0.2.18
 duckduckgo_search
 trafilatura
+beautifulsoup4

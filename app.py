@@ -43,6 +43,11 @@ css = """
 .message-bubble-border {
     border-radius: 6px !important;
 }
+.message-buttons-bot, .message-buttons-user {
+    right: 10px !important;
+    left: auto !important;
+    bottom: 2px !important;
+}
 .dark.message-bubble-border {
     border-color: #1b0f0f !important;
 }
@@ -272,9 +277,11 @@ demo = gr.ChatInterface(
             block_title_background_fill_dark="#1b0f0f",
             input_background_fill_dark="#140b0b",
             button_secondary_background_fill_dark="#140b0b",
+            border_color_accent_dark="#1b0f0f",
             border_color_primary_dark="#1b0f0f",
             background_fill_secondary_dark="#0c0505",
-            color_accent_soft_dark="transparent"
+            color_accent_soft_dark="transparent",
+            code_background_fill_dark="#140b0b"
         ),
         css=css,
         retry_btn="Retry",

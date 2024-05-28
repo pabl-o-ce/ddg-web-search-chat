@@ -284,7 +284,11 @@ demo = gr.ChatInterface(
         examples = (examples),
         description="Llama-cpp-agent: Chat Web Search DDG Agent",
         analytics_enabled=False,
-        chatbot=gr.Chatbot(scale=1, placeholder=PLACEHOLDER)
+        chatbot=gr.Chatbot(
+            scale=1,
+            placeholder=PLACEHOLDER,
+            show_copy_button=True
+        )
     )
 
 if __name__ == "__main__":

@@ -5,6 +5,11 @@ css = """
 .message-bubble-border {
     border-radius: 6px !important;
 }
+.message-buttons-bot, .message-buttons-user {
+    right: 10px !important;
+    left: auto !important;
+    bottom: 2px !important;
+}
 .dark.message-bubble-border {
     border-color: #1b0f0f !important;
 }

@@ -15,7 +15,7 @@ from llama_cpp_agent.llm_output_settings import (
 from llama_cpp_agent.tools import WebSearchTool
 from llama_cpp_agent.prompt_templates import web_search_system_prompt, research_system_prompt
 from style import css, PLACEHOLDER
-from utils import CitingSources
+from ui import CitingSources
 from settings import get_context_by_model, get_messages_formatter_type
 
 hf_hub_download(

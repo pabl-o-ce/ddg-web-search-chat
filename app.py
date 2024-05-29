@@ -17,14 +17,6 @@ from llama_cpp_agent.prompt_templates import web_search_system_prompt, research_
 from style import css, PLACEHOLDER
 from utils import CitingSources
 
-model_selected = "Mistral-7B-Instruct-v0.3-Q6_K.gguf"
-examples = [
-    ["latest news about Yann LeCun"],
-    ["Latest news site:github.blog"],
-    ["Where I can find best hotel in Galapagos, Ecuador intitle:hotel"],
-    ["filetype:pdf intitle:python"]
-]
-
 hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",
     filename="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
@@ -35,6 +27,18 @@ hf_hub_download(
     filename="Meta-Llama-3-8B-Instruct-Q6_K.gguf",
     local_dir="./models"
 )
+hf_hub_download(
+    repo_id="TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF",
+    filename="mixtral-8x7b-instruct-v0.1.Q5_K_M.gguf",
+    local_dir="./models"
+)
+
+examples = [
+    ["latest news about Yann LeCun"],
+    ["Latest news site:github.blog"],
+    ["Where I can find best hotel in Galapagos, Ecuador intitle:hotel"],
+    ["filetype:pdf intitle:python"]
+]
 
 css = """
 .message-row {
@@ -98,19 +102,20 @@ PLACEHOLDER = """
 def get_context_by_model(model_name):
     model_context_limits = {
         "Mistral-7B-Instruct-v0.3-Q6_K.gguf": 32768,
+        "mixtral-8x7b-instruct-v0.1.Q5_K_M.gguf": 32768,
         "Meta-Llama-3-8B-Instruct-Q6_K.gguf": 8192
     }
     return model_context_limits.get(model_name, None)
 
 def get_messages_formatter_type(model_name):
-    from llama_cpp_agent import MessagesFormatterType
-    if "Meta" in model_name or "aya" in model_name:
+    model_name = model_name.lower()
+    if any(keyword in model_name for keyword in ["meta", "aya"]):
         return MessagesFormatterType.LLAMA_3
-    elif "Mistral" in model_name:
+    elif any(keyword in model_name for keyword in ["mistral", "mixtral"]):
         return MessagesFormatterType.MISTRAL
-    elif "Einstein-v6-7B" in model_name or "dolphin" in model_name:
+    elif any(keyword in model_name for keyword in ["einstein", "dolphin"]):
         return MessagesFormatterType.CHATML
-    elif "Phi" in model_name:
+    elif "phi" in model_name:
         return MessagesFormatterType.PHI_3
     else:
         return MessagesFormatterType.CHATML
@@ -236,6 +241,7 @@ demo = gr.ChatInterface(
     additional_inputs=[
         gr.Dropdown([
             'Mistral-7B-Instruct-v0.3-Q6_K.gguf',
+            'mixtral-8x7b-instruct-v0.1.Q5_K_M.gguf',
             'Meta-Llama-3-8B-Instruct-Q6_K.gguf'
         ],
             value="Mistral-7B-Instruct-v0.3-Q6_K.gguf",

@@ -5,7 +5,7 @@ from huggingface_hub import hf_hub_download
 
 from llama_cpp import Llama
 from llama_cpp_agent.providers import LlamaCppPythonProvider
-from llama_cpp_agent import LlamaCppAgent
+from llama_cpp_agent import LlamaCppAgent, MessagesFormatterType
 from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
 from llama_cpp_agent.llm_output_settings import (

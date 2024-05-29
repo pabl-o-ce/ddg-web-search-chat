@@ -34,6 +34,9 @@ PLACEHOLDER = """
                 <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(229, 70, 77, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #f88181; margin-bottom: 2.5px;">
                     Mistral 7B Instruct v0.3
                 </span>
+                <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(229, 70, 77, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #f88181; margin-bottom: 2.5px;">
+                    Mixtral 8x7B Instruct v0.1
+                </span>
                 <span style="display: inline-flex; align-items: center; border-radius: 0.375rem; background-color: rgba(79, 70, 229, 0.1); padding: 0.1rem 0.75rem; font-size: 0.75rem; font-weight: 500; color: #60a5fa; margin-top: 2.5px;">
                     Meta Llama 3 8B Instruct
                 </span>

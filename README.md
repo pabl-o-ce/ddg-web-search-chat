@@ -1,6 +1,6 @@
 ---
-title: Chat Web Search DDG Agent
-emoji: 🗿
+title: Chat with DuckDuckGo Agent
+emoji: 🦆
 colorFrom: yellow
 colorTo: purple
 sdk: gradio

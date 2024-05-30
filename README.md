@@ -2,7 +2,7 @@
 title: Chat with DuckDuckGo Agent
 emoji: 🦆
 colorFrom: yellow
-colorTo: blue
+colorTo: red
 sdk: gradio
 sdk_version: 4.31.5
 app_file: app.py

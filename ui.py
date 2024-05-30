@@ -22,7 +22,7 @@ css = """
 """
 
 PLACEHOLDER = """
-<div class="message-bubble-border" style="display:flex; max-width: 600px; border-width: 1px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px);">
+<div class="message-bubble-border" style="display:flex; max-width: 600px; border-width: 1px; border-color: #e5e7eb; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px);">
     <figure style="margin: 0;">
         <img src="https://huggingface.co/spaces/poscye/ddg-web-search-chat/resolve/main/logo.jpg" alt="Logo" style="width: 100%; height: 100%; border-radius: 8px;">
     </figure>

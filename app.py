@@ -214,6 +214,7 @@ demo = gr.ChatInterface(
         undo_btn="Undo",
         clear_btn="Clear",
         submit_btn="Send",
+        cache_examples=False,
         examples = (examples),
         description="Llama-cpp-agent: Chat with DuckDuckGo Agent",
         analytics_enabled=False,

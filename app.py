@@ -18,6 +18,9 @@ from ui import css, PLACEHOLDER
 from utils import CitingSources
 from settings import get_context_by_model, get_messages_formatter_type
 
+llm = None
+llm_model = None
+
 hf_hub_download(
     repo_id="bartowski/Mistral-7B-Instruct-v0.3-GGUF",
     filename="Mistral-7B-Instruct-v0.3-Q6_K.gguf",
@@ -60,14 +63,18 @@ def respond(
     top_k,
     repeat_penalty,
 ):
+    global llm
+    global llm_model
     chat_template = get_messages_formatter_type(model)
-    llm = Llama(
-        model_path=f"models/{model}",
-        flash_attn=True,
-        n_gpu_layers=81,
-        n_batch=1024,
-        n_ctx=get_context_by_model(model),
-    )
+    if llm is None or llm_model != model:
+        llm = Llama(
+            model_path=f"models/{model}",
+            flash_attn=True,
+            n_gpu_layers=81,
+            n_batch=1024,
+            n_ctx=get_context_by_model(model),
+        )
+        llm_model = model
     provider = LlamaCppPythonProvider(llm)
     logging.info(f"Loaded chat examples: {chat_template}")
     search_tool = WebSearchTool(

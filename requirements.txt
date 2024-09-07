@@ -5,4 +5,5 @@ llama-cpp-agent>=0.2.18
 duckduckgo_search
 trafilatura
 beautifulsoup4
+pypdf
 googlesearch-python

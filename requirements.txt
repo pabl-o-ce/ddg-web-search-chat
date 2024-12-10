@@ -1,5 +1,5 @@
 huggingface_hub>=0.22.2
 scikit-build-core
-https://github.com/abetlen/llama-cpp-python/releases/download/v0.2.76-cu124/llama_cpp_python-0.2.76-cp310-cp310-linux_x86_64.whl
+https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.4-cu124/llama_cpp_python-0.3.4-cp310-cp310-linux_x86_64.whl
 pypdf
 llama_cpp_agent[web_search_summarization]>=0.2.35

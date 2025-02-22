@@ -1,0 +1,56 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches: [main]
+
+  # to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.12'
+  HF_USERNAME: 'poscye'
+  SPACE_NAME: 'ddg-web-search-chat'
+
+jobs:
+  # lint-and-test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #         lfs: true
+
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: ${{ env.PYTHON_VERSION }}
+  #         cache: 'pip'
+
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install ruff pytest gradio
+  #         pip install -r requirements.txt
+          
+      # - name: Lint with Ruff
+      #   run: |
+      #     pip install ruff
+      #     ruff check .
+      #     ruff format --check .
+
+      # - name: Run tests
+      #   run: |
+      #     python -m pytest tests/ -v
+
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: Push to hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: git push --force https://${{ env.HF_TOKEN }}:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/${{ env.HF_USERNAME }}/${{ env.SPACE_NAME }} main

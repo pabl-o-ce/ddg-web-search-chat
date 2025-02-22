@@ -18,6 +18,9 @@ models:
 
 # Chat with DuckDuckGo Agent 🦆
 
+[![Open In Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue.svg)](https://huggingface.co/spaces/poscye/ddg-web-search-chat)
+[![Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+
 A Gradio-based web interface that allows users to chat with an AI agent capable of searching the web using DuckDuckGo. The agent uses llama.cpp to run various open-source language models locally.
 
 ## Features
